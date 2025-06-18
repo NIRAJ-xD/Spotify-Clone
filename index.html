@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify - Music for everyone </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Spotify">
+            </a>
+            <div class="nav-links" id="navlinks">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+            <div class="user">
+                <img src="images/user.png" alt="User">
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="content">
+            <div class="sidebar">
+                <h1>Your Library</h1>
+                <div class="library">
+                    <div class="card">
+                        <img src="images/album1.png" alt="Album 1" class="album" id="album1">
+                        <div class="song-info">
+                            <h2>Album 1</h2>
+                            <p>Artist 1</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="images/album2.png" alt="Album 2" class="album" id="album2">
+                        <div class="song-info">
+                            <h2>Album 2</h2>
+                            <p>Artist 2</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="images/album3.png" alt="Album 3" class="album" id="album3">
+                        <div class="song-info">
+                            <h2>Album 3</h2>
+                            <p>Artist 3</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="images/album4.png" alt="Album 4" class="album" id="album4">
+                        <div class="song-info">
+                            <h2>Album 4</h2>
+                            <p>Artist 4</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="images/album5.png" alt="Album 5" class="album" id="album5">
+                        <div class="song-info">
+                            <h2>Album 5</h2>
+                            <p>Artist 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <img src="images/album1.png" alt="" class="album">
+                <h2>Album 1</h2>
+                <p>Artist 1</p>
+            </div>
+        </section>
+    </main>
+    <section class="playbar">
+        <div class="song">
+            <img src="images/album1.png" alt="Album 1" class="album">
+            <div class="song-info">
+                <h2>Album 1</h2>
+                <p>Artist 1</p>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="music-controls">
+                <i class="fa-solid fa-backward"></i>
+                <i class="fa-solid fa-circle-play"></i>
+                <i class="fa-solid fa-forward"></i>
+            </div>
+            <div class="progress-bar">
+                <div class="progress">
+                    <span class="current-time">0:00</span>
+                    <input type="range" name="progress" id="music-progress">
+                    <span class="duration">0:00</span>
+                </div>
+            </div>
+        </div>
+        <div class="volume">
+            <i class="fa-solid fa-volume-high"></i>
+                <input type="range" name="volume" id="volume-progress">
+        </div>
+    </section>
+</body>
+</html>
