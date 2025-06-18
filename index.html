@@ -40,6 +40,8 @@
                             <h2>Album 1</h2>
                             <p>Artist 1</p>
                         </div>
+                        <span><i class="fa-solid fa-circle-play"></i>
+                        </span>
                     </div>
                     <div class="card">
                         <img src="images/album2.png" alt="Album 2" class="album" id="album2">
@@ -47,6 +49,8 @@
                             <h2>Album 2</h2>
                             <p>Artist 2</p>
                         </div>
+                        <span><i class="fa-solid fa-circle-play"></i>
+                        </span>
                     </div>
                     <div class="card">
                         <img src="images/album3.png" alt="Album 3" class="album" id="album3">
@@ -54,6 +58,8 @@
                             <h2>Album 3</h2>
                             <p>Artist 3</p>
                         </div>
+                        <span><i class="fa-solid fa-circle-play"></i>
+                        </span>
                     </div>
                     <div class="card">
                         <img src="images/album4.png" alt="Album 4" class="album" id="album4">
@@ -61,6 +67,8 @@
                             <h2>Album 4</h2>
                             <p>Artist 4</p>
                         </div>
+                        <span><i class="fa-solid fa-circle-play"></i>
+                        </span>
                     </div>
                     <div class="card">
                         <img src="images/album5.png" alt="Album 5" class="album" id="album5">
@@ -68,6 +76,8 @@
                             <h2>Album 5</h2>
                             <p>Artist 5</p>
                         </div>
+                        <span><i class="fa-solid fa-circle-play"></i>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -95,14 +105,14 @@
             <div class="progress-bar">
                 <div class="progress">
                     <span class="current-time">0:00</span>
-                    <input type="range" name="progress" id="music-progress">
+                    <input type="range" name="progress" id="progress" min="0" max="100" value="0">
                     <span class="duration">0:00</span>
                 </div>
             </div>
         </div>
         <div class="volume">
-            <i class="fa-solid fa-volume-high"></i>
-                <input type="range" name="volume" id="volume-progress">
+            <i class="fa-solid fa-volume-high" onclick="toggleMute()"></i>
+                <input type="range" name="volume" id="volume" min="0" max="100" value="100">
         </div>
     </section>
 </body>

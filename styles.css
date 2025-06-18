@@ -2,6 +2,8 @@
     --primary-color: white;
     --secondary-color: black;
     --hover-color: #12e780;
+    --bg-light:#4646467a;
+    --bg-dark:#0000006c;
     --accent-color: #1ED760;
     --accent-hover:#00e984;
     --ff: 'Poppins', sans-serif;
@@ -55,14 +57,13 @@ img{
     width: 100%;
     height: 70px;
     z-index: 999;
-    background-color: rgba(28, 28, 28, 0.297);
+    background-color: var(--bg-dark);
 }
 .nav-links ul{
     display: flex;
     list-style: none;
     gap: 6rem;
-    background-color: rgba(69, 69, 69, 0.321);
-    border: 1px solid rgba(66, 66, 66, 0.171);
+    background-color: var(--bg-light);
     border-radius: 50px;
     padding: 0.5rem 10vw;
 }
@@ -91,7 +92,9 @@ img{
     position: fixed;
     gap: 2rem;
     padding: 1rem 2rem;
-    background-color: rgb(41, 41, 41);
+    border: 5px solid var(--secondary-color);
+    border-radius: 20px;
+    background-color: var(--bg-light);
 }
 .library{
     display: flex;
@@ -105,16 +108,21 @@ img{
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    padding: 0 0.5rem;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 .card img{
     width: 40px;
     height: 40px;
 }
-.card:hover{
+.card i{
+    font-size: 1.5rem;
+}
+.card i:hover{
     cursor: pointer;
+    transform: scale(1.3);
     color: var(--accent-hover);
-    transform: scale(1.1);
 }
 .container{
     display: flex;
@@ -122,12 +130,14 @@ img{
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    border: 5px solid var(--secondary-color);
+    border-radius: 20px;
     position: fixed;
     top: 70px;
     left: 20vw;
     height: calc(100vh - 140px);
     width: calc(100% - 20vw);
-    background-color: rgb(34, 34, 34);
+    background-color: var(--bg-light);
 }
 .container img{
     width: 60vw;
@@ -153,7 +163,7 @@ img{
     height: 70px;
     padding: 0 2rem;
     z-index: 999;
-    background-color: rgba(26, 23, 23, 0.736);
+    background-color: var(--bg-dark);
 }
 .controls{
     display: flex;
@@ -165,10 +175,32 @@ img{
 .progress input{
     width: 40vw;
     height: 5px;
+    border-radius: 5px;
+    background: linear-gradient(to right, var(--accent-color) 0%, var(--primary-color) 0%);
+    outline: none;
+    -webkit-appearance: none;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+.progress input:hover{
+    height: 6px;
+}
+.progress input::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--primary-color);
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+.progress input:hover::-webkit-slider-thumb{
+    width: 15px;
+    height: 15px;
 }
 .progress span{
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 .music-controls{
     display: flex;
@@ -184,6 +216,7 @@ img{
 }
 .music-controls i:hover{
     color: var(--accent-hover);
+    transform: scale(1.1);
 }
 .song{
     display: flex;
@@ -210,9 +243,44 @@ img{
     gap: 0.5rem;
 }
 .volume input{
-    width: 10vw;
-    height: 5px;
+    -webkit-appearance: none;
+    outline: none;
+    width: 9vw;
+    height: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+.volume input:hover{
+    height: 6px;
+}
+.volume input::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 9vw;
+    height: 4px;
+    border-radius: 5px;
+}
+.volume input::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--primary-color);
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    margin-top: -3px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+.volume input.expanded::-webkit-slider-thumb {
+    opacity: 1;
+}  
+.volume input:hover::-webkit-slider-thumb{
+    opacity: 1;
+}
+.volume input:active::-webkit-slider-thumb{
+    opacity: 1;
 }
 .volume i{
     font-size: 1.2rem;
