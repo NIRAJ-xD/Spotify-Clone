@@ -52,15 +52,31 @@ function initPlayer() {
     volumeControl.addEventListener('input', setVolume);
     volumeIcon.addEventListener('click', toggleMute);
     audioPlayer.addEventListener('timeupdate', updateProgress);
-    audioPlayer.addEventListener('ended', nextSong);
+    audioPlayer.addEventListener('ended', () => {
+        setTimeout(nextSong, 500); // Smooth transition between songs
+    });
     audioPlayer.addEventListener('loadedmetadata', updateDuration);
     
-    // Initialize volume
+    // Initialize volume from localStorage or default
+    const savedVolume = localStorage.getItem('volume');
+    volumeControl.value = savedVolume !== null ? savedVolume : 80;
     setVolume();
+    
+    // Create aria-live element for accessibility
+    const ariaLive = document.createElement('div');
+    ariaLive.id = 'aria-live';
+    ariaLive.setAttribute('aria-live', 'polite');
+    ariaLive.style.position = 'absolute';
+    ariaLive.style.left = '-9999px';
+    document.body.appendChild(ariaLive);
 }
 
 // Play Song
 function playSong(index) {
+    // Update active card styling
+    cards.forEach(card => card.classList.remove('active'));
+    cards[index].classList.add('active');
+    
     currentSongIndex = index;
     const song = songs[index];
     
@@ -72,17 +88,31 @@ function playSong(index) {
     nowPlayingTitle.textContent = song.title;
     nowPlayingArtist.textContent = song.artist;
     
-    audioPlayer.play();
-    isPlaying = true;
-    updatePlayBtn();
+    audioPlayer.play()
+        .then(() => {
+            isPlaying = true;
+            updatePlayBtn();
+            announce(`Now playing: ${song.title} by ${song.artist}`);
+        })
+        .catch(error => {
+            console.error('Playback failed:', error);
+            announce('Playback failed. Please try again.');
+        });
 }
 
 // Toggle Play/Pause
 function togglePlay() {
     if (isPlaying) {
         audioPlayer.pause();
+        announce('Playback paused');
     } else {
-        audioPlayer.play();
+        audioPlayer.play()
+            .then(() => {
+                announce(`Resumed playback: ${songs[currentSongIndex].title}`);
+            })
+            .catch(error => {
+                console.error('Playback failed:', error);
+            });
     }
     isPlaying = !isPlaying;
     updatePlayBtn();
@@ -149,6 +179,12 @@ function setVolume() {
     
     // Update volume gradient
     updateVolumeGradient();
+    
+    // Show visual feedback
+    showVolumeFeedback();
+    
+    // Save preference
+    localStorage.setItem('volume', volumeControl.value);
 }
 
 // Toggle Mute
@@ -168,6 +204,61 @@ function updateVolumeGradient() {
     const val = volumeControl.value;
     volumeControl.style.background = `linear-gradient(to right, var(--accent-color) 0%, var(--accent-color) ${val}%, var(--primary-color) ${val}%, var(--primary-color) 100%)`;
 }
+
+// Show Volume Feedback
+function showVolumeFeedback() {
+    let feedback = document.querySelector('.volume-feedback');
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'volume-feedback';
+        document.body.appendChild(feedback);
+    }
+    feedback.textContent = `Volume: ${volumeControl.value}%`;
+    feedback.style.opacity = '1';
+    
+    setTimeout(() => {
+        feedback.style.opacity = '0';
+    }, 1000);
+}
+
+// Accessibility Announcements
+function announce(message) {
+    const ariaLive = document.getElementById('aria-live');
+    if (ariaLive) {
+        ariaLive.textContent = message;
+    }
+}
+
+// Keyboard Shortcuts
+document.addEventListener('keydown', (e) => {
+    // Prevent default behavior for media keys
+    if (['Space', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code)) {
+        e.preventDefault();
+    }
+
+    // Handle space key for play/pause
+    if (e.code === 'Space') {
+        // Prevent spacebar from scrolling page
+        if (e.target === document.body) {
+            e.preventDefault();
+        }
+        togglePlay();
+    }
+    
+    // Media controls
+    if (e.code === 'ArrowRight') nextSong();
+    if (e.code === 'ArrowLeft') prevSong();
+    
+    // Volume control with bounds checking
+    if (e.code === 'ArrowUp') {
+        volumeControl.value = Math.min(parseInt(volumeControl.value) + 10, 100);
+        setVolume();
+    }
+    if (e.code === 'ArrowDown') {
+        volumeControl.value = Math.max(parseInt(volumeControl.value) - 10, 0);
+        setVolume();
+    }
+});
 
 // Initialize the player when DOM is loaded
 document.addEventListener('DOMContentLoaded', initPlayer);
