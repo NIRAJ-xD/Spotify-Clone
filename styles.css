@@ -318,7 +318,9 @@ input[type="range"]:hover::-webkit-slider-thumb {
         width: 100%;
         justify-content: center;
     }
-    
+    .now-playing{
+        display: none;
+    }
     .music-controls {
         margin: 1rem 0;
     }
