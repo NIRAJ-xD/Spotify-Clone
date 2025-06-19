@@ -19,7 +19,8 @@ body {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     font-family: var(--ff);
-    height: 100vh;
+    max-height: 100vh;
+    max-height: 100dvh;
     overflow: hidden;
 }
 
