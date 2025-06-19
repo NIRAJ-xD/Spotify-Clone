@@ -329,6 +329,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
     color: var(--accent-color);
     z-index: 1000;
     display: none;
+    transition: opacity 0.5s ease;
 }
 /* Responsive Design */
 @media (max-width: 1100px) {

@@ -262,3 +262,11 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize the player when DOM is loaded
 document.addEventListener('DOMContentLoaded', initPlayer);
+// Loader
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    loader.style.opacity = '0';
+    setTimeout(() => {
+        loader.style.display = 'none';
+    }, 500);
+});
