@@ -342,7 +342,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
     
     .sidebar {
         width: 100%;
-        height: auto;
+        height: calc(100vh - 140px);
     }
     
     .container {
