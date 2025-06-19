@@ -328,7 +328,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
     font-size: 2rem;
     color: var(--accent-color);
     z-index: 1000;
-    display: none;
+    display: block;
     transition: opacity 0.5s ease;
 }
 /* Responsive Design */
