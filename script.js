@@ -15,6 +15,7 @@ const currentArtist = document.getElementById('currentArtist');
 const nowPlayingImg = document.getElementById('nowPlayingImg');
 const nowPlayingTitle = document.getElementById('nowPlayingTitle');
 const nowPlayingArtist = document.getElementById('nowPlayingArtist');
+const loader = document.getElementById('loader');
 
 // Player State
 let currentSongIndex = 0;
@@ -25,6 +26,21 @@ const songs = Array.from(cards).map(card => ({
     cover: card.querySelector('img').src,
     audio: card.dataset.audio
 }));
+
+// Show loader with blocking overlay
+function showLoader() {
+    loader.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+// Hide loader and restore interactions
+function hideLoader() {
+    loader.style.opacity = '0';
+    setTimeout(() => {
+        loader.style.display = 'none';
+        document.body.style.overflow = '';
+    }, 500);
+}
 
 // Initialize Player
 function initPlayer() {
@@ -53,7 +69,7 @@ function initPlayer() {
     volumeIcon.addEventListener('click', toggleMute);
     audioPlayer.addEventListener('timeupdate', updateProgress);
     audioPlayer.addEventListener('ended', () => {
-        setTimeout(nextSong, 500); // Smooth transition between songs
+        setTimeout(nextSong, 500);
     });
     audioPlayer.addEventListener('loadedmetadata', updateDuration);
     
@@ -71,8 +87,10 @@ function initPlayer() {
     document.body.appendChild(ariaLive);
 }
 
-// Play Song
+// Play Song with loading state
 function playSong(index) {
+    showLoader(); // Show loader when changing songs
+    
     // Update active card styling
     cards.forEach(card => card.classList.remove('active'));
     cards[index].classList.add('active');
@@ -80,7 +98,7 @@ function playSong(index) {
     currentSongIndex = index;
     const song = songs[index];
     
-    audioPlayer.src = song.audio;
+    // Update UI immediately
     albumCover.src = song.cover;
     currentAlbum.textContent = song.title;
     currentArtist.textContent = song.artist;
@@ -88,185 +106,26 @@ function playSong(index) {
     nowPlayingTitle.textContent = song.title;
     nowPlayingArtist.textContent = song.artist;
     
+    // Set audio source and play
+    audioPlayer.src = song.audio;
     audioPlayer.play()
         .then(() => {
             isPlaying = true;
             updatePlayBtn();
             announce(`Now playing: ${song.title} by ${song.artist}`);
+            hideLoader(); // Hide when playback starts
         })
         .catch(error => {
             console.error('Playback failed:', error);
             announce('Playback failed. Please try again.');
+            hideLoader(); // Hide even if there's an error
         });
 }
 
-// Toggle Play/Pause
-function togglePlay() {
-    if (isPlaying) {
-        audioPlayer.pause();
-        announce('Playback paused');
-    } else {
-        audioPlayer.play()
-            .then(() => {
-                announce(`Resumed playback: ${songs[currentSongIndex].title}`);
-            })
-            .catch(error => {
-                console.error('Playback failed:', error);
-            });
-    }
-    isPlaying = !isPlaying;
-    updatePlayBtn();
-}
-
-// Update Play Button
-function updatePlayBtn() {
-    const icon = isPlaying ? 'fa-pause' : 'fa-play';
-    playBtn.classList.replace(isPlaying ? 'fa-play' : 'fa-pause', icon);
-}
-
-// Previous Song
-function prevSong() {
-    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-    playSong(currentSongIndex);
-}
-
-// Next Song
-function nextSong() {
-    currentSongIndex = (currentSongIndex + 1) % songs.length;
-    playSong(currentSongIndex);
-}
-
-// Update Progress Bar
-function updateProgress() {
-    const { currentTime, duration } = audioPlayer;
-    const progressPercent = (currentTime / duration) * 100;
-    progressBar.value = progressPercent;
-    currentTimeEl.textContent = formatTime(currentTime);
-    
-    // Update progress bar gradient
-    progressBar.style.background = `linear-gradient(to right, var(--accent-color) 0%, var(--accent-color) ${progressPercent}%, var(--primary-color) ${progressPercent}%, var(--primary-color) 100%)`;
-}
-
-// Set Progress
-function setProgress() {
-    const progress = progressBar.value;
-    const duration = audioPlayer.duration;
-    audioPlayer.currentTime = (progress / 100) * duration;
-}
-
-// Update Duration
-function updateDuration() {
-    durationEl.textContent = formatTime(audioPlayer.duration);
-}
-
-// Format Time
-function formatTime(seconds) {
-    if (isNaN(seconds)) return "0:00";
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-// Set Volume
-function setVolume() {
-    const volume = volumeControl.value / 100;
-    audioPlayer.volume = volume;
-    
-    // Update volume icon
-    volumeIcon.className = volume === 0 ? 
-        'fa-solid fa-volume-mute' : 
-        'fa-solid fa-volume-high';
-    
-    // Update volume gradient
-    updateVolumeGradient();
-    
-    // Show visual feedback
-    showVolumeFeedback();
-    
-    // Save preference
-    localStorage.setItem('volume', volumeControl.value);
-}
-
-// Toggle Mute
-function toggleMute() {
-    if (audioPlayer.volume > 0) {
-        audioPlayer.volume = 0;
-        volumeControl.value = 0;
-    } else {
-        audioPlayer.volume = 0.8;
-        volumeControl.value = 80;
-    }
-    setVolume();
-}
-
-// Update Volume Gradient
-function updateVolumeGradient() {
-    const val = volumeControl.value;
-    volumeControl.style.background = `linear-gradient(to right, var(--accent-color) 0%, var(--accent-color) ${val}%, var(--primary-color) ${val}%, var(--primary-color) 100%)`;
-}
-
-// Show Volume Feedback
-function showVolumeFeedback() {
-    let feedback = document.querySelector('.volume-feedback');
-    if (!feedback) {
-        feedback = document.createElement('div');
-        feedback.className = 'volume-feedback';
-        document.body.appendChild(feedback);
-    }
-    feedback.textContent = `Volume: ${volumeControl.value}%`;
-    feedback.style.opacity = '1';
-    
-    setTimeout(() => {
-        feedback.style.opacity = '0';
-    }, 1000);
-}
-
-// Accessibility Announcements
-function announce(message) {
-    const ariaLive = document.getElementById('aria-live');
-    if (ariaLive) {
-        ariaLive.textContent = message;
-    }
-}
-
-// Keyboard Shortcuts
-document.addEventListener('keydown', (e) => {
-    // Prevent default behavior for media keys
-    if (['Space', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code)) {
-        e.preventDefault();
-    }
-
-    // Handle space key for play/pause
-    if (e.code === 'Space') {
-        // Prevent spacebar from scrolling page
-        if (e.target === document.body) {
-            e.preventDefault();
-        }
-        togglePlay();
-    }
-    
-    // Media controls
-    if (e.code === 'ArrowRight') nextSong();
-    if (e.code === 'ArrowLeft') prevSong();
-    
-    // Volume control with bounds checking
-    if (e.code === 'ArrowUp') {
-        volumeControl.value = Math.min(parseInt(volumeControl.value) + 10, 100);
-        setVolume();
-    }
-    if (e.code === 'ArrowDown') {
-        volumeControl.value = Math.max(parseInt(volumeControl.value) - 10, 0);
-        setVolume();
-    }
-});
-
 // Initialize the player when DOM is loaded
 document.addEventListener('DOMContentLoaded', initPlayer);
-// Loader
+
+// Hide initial loader when window loads
 window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    loader.style.opacity = '0';
-    setTimeout(() => {
-        loader.style.display = 'none';
-    }, 5000);
+    hideLoader();
 });
