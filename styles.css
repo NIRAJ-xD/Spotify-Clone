@@ -61,7 +61,7 @@ p { font-size: 0.8rem; font-weight: 600; }
 .nav-links ul {
     display: flex;
     list-style: none;
-    gap: 5rem;
+    gap: 6rem;
     background-color: var(--bg-light);
     border-radius: 50px;
     padding: 0.5rem 2rem;
@@ -82,7 +82,7 @@ p { font-size: 0.8rem; font-weight: 600; }
 .content {
     display: flex;
     padding: 1rem;
-    gap: 6rem;
+    gap: 1rem;
     height: calc(100vh - 140px);
 }
 
