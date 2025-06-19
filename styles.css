@@ -249,6 +249,7 @@ p { font-size: 0.8rem; font-weight: 600; }
 
 input[type="range"] {
     -webkit-appearance: none;
+    appearance: none;
     height: 5px;
     width: 100%;
     border-radius: 5px;
