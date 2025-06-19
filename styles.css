@@ -378,7 +378,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
     }
     .sidebar {
         width: 100%;
-        max-height: 400px;
+        max-height: 500px;
     }
     .container {
         height: calc(100vh - 210px);
