@@ -326,14 +326,13 @@ input[type="range"]:hover::-webkit-slider-thumb {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
     display: none;
-    justify-content: center;
-    align-items: center;
-    pointer-events: all;
-  }
-  
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none; 
+}
 /* Spinner styling */
 .loader-icon {
     font-size: 3rem;
