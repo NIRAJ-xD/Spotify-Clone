@@ -359,8 +359,16 @@ input[type="range"]:hover::-webkit-slider-thumb {
         width: 100%;
         justify-content: center;
     }
-    .now-playing{
+    .volume-control{
+        width: 60px;
+        margin-top: 2px;
+    }
+    .container{
         display: none;
+    }
+    .playbar .now-playing{
+        transform: translateY(-20px) scale(1.3);
+        text-align: center;
     }
     .music-controls {
         margin: 1rem 0;
